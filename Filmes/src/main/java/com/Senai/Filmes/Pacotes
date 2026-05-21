@@ -1,0 +1,17 @@
+Cada package faz Função:
+
+controller	-> Recebe requisições HTTP
+
+service	-> Regras de negócio
+
+repository	-> Comunicação com banco
+
+entity	-> Tabelas/entidades
+
+dto	-> Objetos de transferência
+
+config	-> Configurações
+
+security -> JWT/login
+
+exception -> Tratamento de erros
