@@ -6,7 +6,7 @@ service	-> Regras de negócio
 
 repository	-> Comunicação com banco
 
-entity	-> Tabelas/entidades
+entity/Model	-> Tabelas/entidades
 
 dto	-> Objetos de transferência
 
