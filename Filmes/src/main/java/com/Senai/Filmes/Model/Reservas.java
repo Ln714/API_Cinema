@@ -1,5 +1,6 @@
 package com.Senai.Filmes.Model;
 
+import com.Senai.Filmes.Model.Enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -24,7 +25,9 @@ public class Reservas {
     @CreationTimestamp
     private LocalDateTime criadoEm;
 
-    @NotBlank(message = "")
+    @NotBlank(message = "Status deve ser preenchido.")
+    @Enumerated(EnumType.STRING)
+    private Status sala;
 
 
 
