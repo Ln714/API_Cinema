@@ -17,8 +17,8 @@ import java.util.UUID;
 @Table(name = "Usuario")
 
 public class Usuario {
-    @Id
 
+    @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
@@ -39,7 +39,7 @@ public class Usuario {
     @CreationTimestamp
     private LocalDateTime criadoEm;
 
-    @NotBlank
+
 
 
 }
