@@ -7,10 +7,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.mapping.List;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -40,8 +40,8 @@ public class Reserva {
     @NotNull
     @ManyToMany
     @JoinColumn(name = "sessao_id")
-    private Sessao sessao;
+    private Sessoes sessoes;
 
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ReservaAssento> assentos = new ArrayList<>();
+    private List<ReservaAssento> assentos = new ArrayList<ReservaAssento>();
 }
