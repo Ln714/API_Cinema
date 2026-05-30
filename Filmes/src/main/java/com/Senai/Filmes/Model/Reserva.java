@@ -26,21 +26,21 @@ public class Reserva {
     private UUID id;
 
     @NotNull
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
     @CreationTimestamp
     private LocalDateTime criadoEm;
 
-    @NotBlank(message = "Status deve ser preenchido.")
+    @NotNull(message = "Status deve ser preenchido.")
     @Enumerated(EnumType.STRING)
     private Status status;
 
     @NotNull
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "sessao_id")
-    private Sessoes sessoes;
+    private Sessoes sessao;
 
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReservaAssento> assentos = new ArrayList<ReservaAssento>();

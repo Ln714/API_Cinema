@@ -15,3 +15,14 @@ config	-> Configurações
 security -> JWT/login
 
 exception -> Tratamento de erros
+
+-------------------
+
+record -> Registro de atividade(Log) monitoradas sem mortificações
+
+infoUser = informações recebidas pelo usuário -> Armazena o dado em uma variável ou list
+
+TratUser = Informações de tratamento Backend
+
+DefUser = Registro de informações gravadas no banco
+
