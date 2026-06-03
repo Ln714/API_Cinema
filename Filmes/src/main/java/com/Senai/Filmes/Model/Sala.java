@@ -15,7 +15,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "Salas")
 
-public class Sala extends Filmes {
+public class Sala  {
 
 
 @Id

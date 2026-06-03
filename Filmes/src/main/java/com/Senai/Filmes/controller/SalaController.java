@@ -1,10 +1,7 @@
 package com.Senai.Filmes.controller;
 
-import com.Senai.Filmes.DTO.Request.FilmeRequest;
 import com.Senai.Filmes.DTO.Request.SalaRequest;
-import com.Senai.Filmes.DTO.Response.FilmeResponse;
 import com.Senai.Filmes.DTO.Response.SalaResponse;
-import com.Senai.Filmes.Model.Sala;
 import com.Senai.Filmes.service.SalaService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,55 +14,77 @@ import java.util.UUID;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("*/api/Salas")
+@RequestMapping("/api/salas")
 public class SalaController {
 
     @Autowired
     private SalaService salaService;
 
-
-    //listar
     @GetMapping
-    @Operation(summary = "Listar Todas as salas", description = "Rota para listar todas salas disponiveis cadastradas")
+    @Operation(
+            summary = "Listar Todas as salas",
+            description = "Rota para listar todas salas disponíveis cadastradas"
+    )
     public ResponseEntity<List<SalaResponse>> listarTodos() {
-        List<SalaResponse> sala = salaService.listTodos();
 
-        if (sala.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        List<SalaResponse> salas = salaService.listTodos();
+
+        if (salas.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
-        return new ResponseEntity<>(sala, HttpStatus.OK);
+
+        return ResponseEntity.ok(salas);
     }
 
-
-    //Buscar por id
     @GetMapping("/{id}")
-    @Operation(summary = "Buscar e listar salas por id", description = "Listar salas realizando a buscas por id")
-    public ResponseEntity<SalaResponse> bucasPorSalaId(@PathVariable UUID id) {
-        return new ResponseEntity<>(salaService.bucasPorSalaId(id), HttpStatus.OK);
+    @Operation(
+            summary = "Buscar sala por id",
+            description = "Busca uma sala pelo seu identificador"
+    )
+    public ResponseEntity<SalaResponse> buscarPorSalaId(@PathVariable UUID id) {
+
+        return ResponseEntity.ok(
+                salaService.bucasPorSalaId(id)
+        );
     }
 
-
-    //Cadastro de salas
     @PostMapping
-    @Operation(summary = "Cadastrar salas", description = "Cadastramento de Salas no banco de dados para o cliente visualizar a lista geral")
-    public ResponseEntity<SalaResponse> cadastrarSala(@RequestBody SalaRequest salarequest) {
-        return new ResponseEntity<>(salarequest.nomeSala(salarequest), HttpStatus.CREATED);
+    @Operation(
+            summary = "Cadastrar sala",
+            description = "Cadastra uma nova sala"
+    )
+    public ResponseEntity<SalaResponse> cadastrarSala(
+            @RequestBody SalaRequest salaRequest) {
+
+        return new ResponseEntity<>(
+                salaService.cadastrarSala(salaRequest),
+                HttpStatus.CREATED
+        );
     }
 
-    //atualizar
-    @PutMapping
-    @Operation(summary = "Atualizar Sala", description = "Atualização das sala no banco de dados")
-    public ResponseEntity<SalaResponse> Atualizar(@PathVariable UUID id, @RequestBody SalaRequest salarequest) {
-        return new ResponseEntity<>(salaService.atualizarSala(id, salarequest), HttpStatus.OK);
+    @PutMapping("/{id}")
+    @Operation(
+            summary = "Atualizar sala",
+            description = "Atualiza os dados de uma sala"
+    )
+    public ResponseEntity<SalaResponse> atualizar(
+            @PathVariable UUID id,
+            @RequestBody SalaRequest salaRequest) {
+
+        return ResponseEntity.ok(
+                salaService.atualizarSala(id, salaRequest)
+        );
     }
 
-    //deletar
-    @DeleteMapping
-    @Operation(summary = "Deletar Sala", description = "Deletar Sala do banco de dados")
-    public ResponseEntity<SalaResponse> deletar(@PathVariable UUID id) {
+    @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Deletar sala",
+            description = "Remove uma sala do banco de dados"
+    )
+    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
 
-        SalaResponse.deletar(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        salaService.deletar(id);
+
+        return ResponseEntity.noContent().build();
     }
-
 }
