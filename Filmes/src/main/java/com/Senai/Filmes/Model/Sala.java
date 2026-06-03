@@ -15,7 +15,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "Salas")
 
-public class Sala {
+public class Sala extends Filmes {
 
 
 @Id
@@ -23,7 +23,7 @@ public class Sala {
 private UUID id;
 
 @NotBlank(message = "Nome da sala obrigatorio!")
-private String nme;
+private String nome;
 
 @Min(value = 1L, message = "A sala deve ter pelo menos 1 assento")
 private  Integer totalAssentos;

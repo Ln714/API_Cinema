@@ -40,10 +40,24 @@ public class FilmeService {
 
     }
 
+ public  FilmeResponse atualizarFilme(UUID uuid, FilmeRequest filmeRequest){
+        Filmes filme = filmeRepository.findById(uuid).orElseThrow(() -> new EntityNotFoundException("Nenhum Filme encontrado"));
 
 
+        filme.setTitulo(filmeRequest.titulo());
+        filme.setDescricao(filmeRequest.Descricao());
+        filme.setGenero(filmeRequest.genero());
+        filme.setUrlPoster(filmeRequest.urlPoster());
+        filme.setDuracaoMinuto(filmeRequest.duracaoMinutos());
+        return toResponse(filmeRepository.save(filme));
 
+ }
 
+ public void deletar(UUID id) {
+     Filmes filme = filmeRepository.findById(id)
+             .orElseThrow(() -> new EntityNotFoundException("Nenhum Filme encontrado"));
+     filmeRepository.delete(filme);
+ }
 
 
 

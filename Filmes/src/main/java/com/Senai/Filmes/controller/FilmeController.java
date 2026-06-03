@@ -1,34 +1,59 @@
 package com.Senai.Filmes.controller;
 
+import com.Senai.Filmes.DTO.Request.FilmeRequest;
 import com.Senai.Filmes.DTO.Response.FilmeResponse;
-import com.Senai.Filmes.Model.Filmes;
 import com.Senai.Filmes.service.FilmeService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin("*")
 @RequestMapping("*/api/filmes")
 public class FilmeController {
 
-@Autowired
+    @Autowired
     private FilmeService filmeService;
 
     @GetMapping
-    public ResponseEntity<List<FilmeResponse>> listarTodos(){
+    @Operation(summary = "Listar todos os filmes", description = "Rota para listar todos os filmes cadastrados")
+    public ResponseEntity<List<FilmeResponse>> listarTodos() {
         List<FilmeResponse> filmes = filmeService.listTodos();
 
-        if(filmes.isEmpty()) {
+        if (filmes.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(filmes, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Buscar e listar filmes por id", description = "Listar filmes realizando a buscas por id")
+    public ResponseEntity<FilmeResponse> bucasPorFilmeID(@PathVariable UUID id) {
+        return new ResponseEntity<>(filmeService.bucasPorFilmeID(id), HttpStatus.OK);
+    }
+
+    @PostMapping
+    @Operation(summary = "Cadastro de filmes", description = "Cadastramento de filmes no banco de dados para o cliente visualizar a lista geral")
+    public ResponseEntity<FilmeResponse> cadastrarFilme(@RequestBody FilmeRequest filmerequest) {
+        return new ResponseEntity<>(filmeService.cadastrarFilme(filmerequest), HttpStatus.CREATED);
+    }
+
+    @PutMapping
+    @Operation(summary = "Atualizar filme", description = "Atualização de filme no banco de dados")
+    public ResponseEntity<FilmeResponse> Atualizar(@PathVariable UUID id, @RequestBody FilmeRequest filmerequest) {
+        return new ResponseEntity<>(filmeService.atualizarFilme(id, filmerequest), HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    @Operation(summary = "Deletar filme", description = "Deletar filme do banco de dados")
+    public ResponseEntity<FilmeResponse> deletar(@PathVariable UUID id) {
+
+        filmeService.deletar(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
