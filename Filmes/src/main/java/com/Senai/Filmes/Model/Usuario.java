@@ -23,7 +23,7 @@ public class Usuario {
     private UUID id;
 
     @NotBlank(message = "Nome obrigatorio!")
-    private String nme;
+    private String nome;
 
     @NotBlank(message = "E-mail é obrigatorio!")
     @Column(unique = true)

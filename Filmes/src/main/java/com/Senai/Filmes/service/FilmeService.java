@@ -17,11 +17,13 @@ public class FilmeService {
     @Autowired
     private IFilmeRepository filmeRepository;
 
+
+    //listagem
     public List<FilmeResponse> listTodos(){
         return filmeRepository.findAll().stream().map(this::toResponse).toList();
     }
 
-
+        //bucasr id
     public FilmeResponse bucasPorFilmeID(UUID id) {
         Filmes filmes = filmeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Filme nao encontrado"));
@@ -58,9 +60,6 @@ public class FilmeService {
              .orElseThrow(() -> new EntityNotFoundException("Nenhum Filme encontrado"));
      filmeRepository.delete(filme);
  }
-
-
-
 
 
                                          //Aux metodo

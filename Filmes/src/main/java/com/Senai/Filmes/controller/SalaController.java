@@ -4,6 +4,7 @@ import com.Senai.Filmes.DTO.Request.SalaRequest;
 import com.Senai.Filmes.DTO.Response.SalaResponse;
 import com.Senai.Filmes.service.SalaService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@Tag(name = "Salas", description = "Endpoint para gerenciamento de salas do cinema")
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/api/salas")
@@ -50,8 +52,8 @@ public class SalaController {
 
     @PostMapping
     @Operation(
-            summary = "Cadastrar sala",
-            description = "Cadastra uma nova sala"
+            summary = "Criar sala",
+            description = "Cadastra uma nova sala com geraçao de assentos"
     )
     public ResponseEntity<SalaResponse> cadastrarSala(
             @RequestBody SalaRequest salaRequest) {
