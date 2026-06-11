@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +58,7 @@ public class AutenticacaoService {
     public AuthResponse login(LoginRequest loginRequest){
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.senha()));
 
-        Usuario usuario = usuarioRepository.findByEmail((loginRequest.email().describeConstable().orElseThrow()));
+        Usuario usuario = usuarioRepository.findByEmail(loginRequest.email()).orElseThrow(()-> new UsernameNotFoundException("Usuario nao encontrado"));
 
         UserDetails userDetails = userDetailsServiceimpl.loadUserByUsername(loginRequest.email());
         String token = jwtUtil.gerarToken(userDetails);
