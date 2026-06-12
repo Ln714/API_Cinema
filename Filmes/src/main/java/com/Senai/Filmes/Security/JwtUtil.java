@@ -1,6 +1,5 @@
 package com.Senai.Filmes.Security;
 
-import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,32 +17,60 @@ public class JwtUtil {
     private String secret;
 
     @Value("${jwt.expiration}")
-    private  long expiration;
+    private long expiration;
 
-    private SecretKey getChave(){
-        return Keys.hmacShaKeyFor(secret.getBytes((StandardCharsets.UTF_8)));
+    private SecretKey getChave() {
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String gerarToken(UserDetails userDetails){
-        return Jwts.builder().subject(userDetails.getUsername()).issuedAt(new Date()).expiration(new Date()).signWith(getChave()).compact();
+    //
+    public String gerarToken(UserDetails userDetails) {
+
+        Date agora = new Date();
+        Date exp = new Date(agora.getTime() + expiration);
+
+        return Jwts.builder()
+                .subject(userDetails.getUsername())
+                .issuedAt(agora)
+                .expiration(exp)
+                .signWith(getChave())
+                .compact();
     }
 
+    //
     public String extrairEmail(String token) {
-        return Jwts.parser().verifyWith(getChave()).build()
-                .parseSignedClaims(token).getPayload().getSubject();
+        return Jwts.parser()
+                .verifyWith(getChave())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
     }
 
+    //
     public boolean validarToken(String token, UserDetails userDetails) {
-        String email = extrairEmail(token);
-        return email.equals(userDetails.getUsername()) && !isTokenExpirado(token);
+        try {
+            String email = extrairEmail(token);
+            return email.equals(userDetails.getUsername()) && !isTokenExpirado(token);
+        } catch (Exception e) {
+            return false;
+        }
     }
 
+    //
     private boolean isTokenExpirado(String token) {
-        return Jwts.parser().verifyWith(getChave()).build()
-                .parseSignedClaims(token).getPayload()
-                .getExpiration().before(new Date());
+        try {
+            Date expirationDate = Jwts.parser()
+                    .verifyWith(getChave())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload()
+                    .getExpiration();
+
+            return expirationDate.before(new Date());
+
+        } catch (Exception e) {
+            return true;
+        }
     }
-
-
-
 }

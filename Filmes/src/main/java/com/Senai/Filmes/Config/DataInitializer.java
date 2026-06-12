@@ -26,10 +26,15 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        if(usuarioRepository.existsByEmail(adminEmail)) {
+            System.out.println("Admin ja existe " + adminEmail);
+            return;
+        }
+
         Usuario admin = new Usuario();
         admin.setNome("Lucas");
         admin.setEmail(adminEmail);
-        admin.setSenha(passwordEncoder.encode(adminSenha)); 
+        admin.setSenha(passwordEncoder.encode(adminSenha));
         admin.setCargo(Cargo.ADMIN);
 
         usuarioRepository.save(admin);
